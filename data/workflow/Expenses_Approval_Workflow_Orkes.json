@@ -1,0 +1,195 @@
+{
+  "name": "Expenses_Approval_Workflow_Orkes_<ID>",
+  "description": "Expenses Aprroval Workflow ORKES",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "expense_request_approval",
+      "taskReferenceName": "expense_request_approval_ref",
+      "inputParameters": {
+        "firstname": "${workflow.input.firstname}",
+        "lastname": "${workflow.input.lastname}",
+        "description": "${workflow.input.description}",
+        "amount": "${workflow.input.amount}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": []
+    },
+    {
+      "name": "passed_request_approval",
+      "taskReferenceName": "passed_request_approval_ref",
+      "inputParameters": {
+        "passedFinanceApproval": "${expense_request_approval_ref.output.approved}"
+      },
+      "type": "SWITCH",
+      "decisionCases": {
+        "true": [
+          {
+            "name": "need_higher_approval",
+            "taskReferenceName": "need_higher_approval_approval_ref",
+            "inputParameters": {},
+            "type": "SIMPLE",
+            "decisionCases": {},
+            "defaultCase": [],
+            "forkTasks": [],
+            "startDelay": 0,
+            "joinOn": [],
+            "optional": false,
+            "defaultExclusiveJoinTask": [],
+            "asyncComplete": false,
+            "loopOver": []
+          },
+          {
+            "name": "need_higher_approval",
+            "taskReferenceName": "need_higher_approval_ref",
+            "inputParameters": {
+              "needManagerApproval": "${need_higher_approval_approval_ref.output.approved}"
+            },
+            "type": "SWITCH",
+            "decisionCases": {
+              "true": [
+                {
+                  "name": "expense_request_manager_approval",
+                  "taskReferenceName": "expense_request_manager_approval_ref",
+                  "inputParameters": {},
+                  "type": "SIMPLE",
+                  "decisionCases": {},
+                  "defaultCase": [],
+                  "forkTasks": [],
+                  "startDelay": 0,
+                  "joinOn": [],
+                  "optional": false,
+                  "defaultExclusiveJoinTask": [],
+                  "asyncComplete": false,
+                  "loopOver": []
+                },
+                {
+                  "name": "passed_manager_approval",
+                  "taskReferenceName": "passed_manager_approval_ref",
+                  "inputParameters": {
+                    "passedManagerApproval": "${expense_request_manager_approval_ref.output.approved}"
+                  },
+                  "type": "SWITCH",
+                  "decisionCases": {
+                    "true": [
+                      {
+                        "name": "initiate_bank_transfer_orkes",
+                        "taskReferenceName": "initiate_bank_transfer_orkes_ref",
+                        "inputParameters": {},
+                        "type": "SIMPLE",
+                        "decisionCases": {},
+                        "defaultCase": [],
+                        "forkTasks": [],
+                        "startDelay": 0,
+                        "joinOn": [],
+                        "optional": false,
+                        "defaultExclusiveJoinTask": [],
+                        "asyncComplete": false,
+                        "loopOver": []
+                      }
+                    ]
+                  },
+                  "defaultCase": [
+                    {
+                      "name": "rejection_expenses_orkes",
+                      "taskReferenceName": "rejection_expenses_manager_orkes",
+                      "inputParameters": {},
+                      "type": "SIMPLE",
+                      "decisionCases": {},
+                      "defaultCase": [],
+                      "forkTasks": [],
+                      "startDelay": 0,
+                      "joinOn": [],
+                      "optional": false,
+                      "defaultExclusiveJoinTask": [],
+                      "asyncComplete": false,
+                      "loopOver": []
+                    }
+                  ],
+                  "forkTasks": [],
+                  "startDelay": 0,
+                  "joinOn": [],
+                  "optional": false,
+                  "defaultExclusiveJoinTask": [],
+                  "asyncComplete": false,
+                  "loopOver": [],
+                  "evaluatorType": "value-param",
+                  "expression": "passedManagerApproval"
+                }
+              ]
+            },
+            "defaultCase": [
+              {
+                "name": "initiate_bank_transfer_orkes",
+                "taskReferenceName": "initiate_bank_transfer_orkes_finance_ref",
+                "inputParameters": {},
+                "type": "SIMPLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": []
+              }
+            ],
+            "forkTasks": [],
+            "startDelay": 0,
+            "joinOn": [],
+            "optional": false,
+            "defaultExclusiveJoinTask": [],
+            "asyncComplete": false,
+            "loopOver": [],
+            "evaluatorType": "value-param",
+            "expression": "needManagerApproval"
+          }
+        ]
+      },
+      "defaultCase": [
+        {
+          "name": "rejection_expenses_orkes",
+          "taskReferenceName": "rejection_expenses_orkes_ref",
+          "inputParameters": {},
+          "type": "SIMPLE",
+          "decisionCases": {},
+          "defaultCase": [],
+          "forkTasks": [],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": []
+        }
+      ],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "evaluatorType": "value-param",
+      "expression": "passedFinanceApproval"
+    }
+  ],
+  "inputParameters": [],
+  "outputParameters": {},
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {}
+}

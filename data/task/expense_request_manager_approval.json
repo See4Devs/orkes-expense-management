@@ -1,0 +1,21 @@
+{
+  "name": "expense_request_manager_approval",
+  "description": "Expense Request Manager Approval",
+  "retryCount": 3,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "approved"
+  ],
+  "outputKeys": [
+    "approved"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 60,
+  "responseTimeoutSeconds": 600,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1
+}

@@ -1,0 +1,21 @@
+{
+  "name": "rejection_expenses_orkes",
+  "description": "Rejection Expense Orkes",
+  "retryCount": 3,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "approved"
+  ],
+  "outputKeys": [
+    "emailContent"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 60,
+  "responseTimeoutSeconds": 600,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1
+}

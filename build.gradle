@@ -1,0 +1,54 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+ext {
+    appVersion = '1.0-SNAPSHOT'
+    versions = [
+            orkesClient: '0.2.0',
+            log4j      : '2.17.1!!',
+    ]
+}
+
+group 'io.orkes.samples'
+version "${appVersion}"
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://orkes-artifacts-repo.s3.amazonaws.com/snapshots/'
+        content {
+            includeGroup 'io.orkes.conductor'
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "org.apache.logging.log4j:log4j-api:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-core:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-jul:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-to-slf4j:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-web:${versions.log4j}"
+    implementation "io.orkes.conductor:orkes-conductor-client:${versions.orkesClient}"
+    implementation 'org.apache.commons:commons-lang3'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configurations {
+    all {
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+    }
+}
+
